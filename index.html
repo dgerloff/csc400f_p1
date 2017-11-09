@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+	<head>
+		<style>	
+			*{margin:0;padding:0;box-sizing:border-box;}
+			h1
+			{	
+				font-family: verdana;
+			}
+	
+			.container {
+				position: relative;
+			}
+
+			#textcanvas {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				z-index: 10;
+			}
+			#controls{
+				width:100%;display:flex;
+				padding:8px;
+				position: fixed;bottom:0;left:0;
+			}
+			#controls > * + *{
+				margin-left:16px;
+			}
+		</style>
+	<title>Brick Wall Project</title>
+	</head>
+	<body>
+		<div class="container">
+			<canvas width = "768" height = "432" id = "glcanvas">
+				Support for the canvas element is required.
+			</canvas>
+		</div>
+		<script src="p1utilities.js"></script>
+		<script src="Helpers.js"></script>
+		<script src='gl-matrix-min.js'></script>
+
+		<script src="Shapes\Shape.js"></script>
+		<script src="Shapes\Triangle.js"></script>
+		<script src="Shapes\Cube.js"></script>
+		
+		<script>
+
+		</script>
+	</body>
+</html>
