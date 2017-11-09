@@ -1,0 +1,27 @@
+- Wall of blocks
+    - at least 10 high, 30 wide
+        - enough to make it look fucking sweet
+    - *"brick wall" pattern*
+        - Hard requirement
+    - Bricks are different solid colors
+        - Draw lines on all bricks
+    - wall rests on some flat ground
+        - big 'ol box
+    - HTML controls
+        - Elevation (vertical angle), rotation (horizontal angle, Azimuth), Power of "launcher" via sliders
+            - These 3 make up the initial force on our "shots"
+            - small, non-colliding cube to show position
+            - Space bar to shoot launcher
+                - Should be able to hold down space with no slow-down
+                    - "Recycle"
+                    - Maybe start with a vector of 100 shots?
+    - Recycle shapes when they fall off the platform
+        - Remove them when they reach -Y = Z
+
+---
+Group work is all above
+
+Solo work
+- Wrecking ball
+    - Elevation (height of anchor), Power (Angle of drop), Azimuth (Rotation, from anchor)
+
