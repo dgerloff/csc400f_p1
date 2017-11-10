@@ -4,7 +4,7 @@ var gl = canvas.getContext('webgl2');
 var colorfulShader = new Shader("colorful_vertex_shader", "colorful_fragment_shader");
 var solidShader = new Shader("solid_vertex_shader", "solid_fragment_shader");
 
-var currentShape = new Triangle();
+var currentShape = new Cube();
 console.log(currentShape);
 
 function Draw(now)
@@ -22,7 +22,6 @@ function Draw(now)
     
     var mdv = mat4.create();
     mat4.lookAt(mdv, [0.0, 0.0, 5.0], [0.0, 0.0, 0.0], [0.0, 1.0, 0.0]);
-    mat4.rotate(mdv, mdv, Radians(now * 90.0), [0.0, 1.0, 0.0]);
 
     if (!viewmode.wireframe)
     {
