@@ -1,16 +1,14 @@
 var canvas = document.getElementById('glcanvas');
 var gl = canvas.getContext('webgl2');
 
-var shapes = [];
-
 var colorfulShader = new Shader("colorful_vertex_shader", "colorful_fragment_shader");
 var solidShader = new Shader("solid_vertex_shader", "solid_fragment_shader");
 
 var projectile_3d = new Cube();
-shapes.push(projectile_3d);
+shapes.push({"name":'projectile',"shape":projectile_3d});
 
 var ground_3d = new Cube();
-shapes.push(ground_3d);
+shapes.push({"name":'ground',"shape":ground_3d});
 
 function Draw(now)
 {
@@ -57,11 +55,17 @@ function Draw(now)
     requestAnimationFrame(Draw);
 }
 
-
 function drawAllShapes(shader_1,shader_2,arg1,arg2,arg3,arg4){
     for(i in shapes){
-        shapes[i].Draw(shader_1,shader_2,arg1,arg2,arg3,arg4);
+        //Re-locate all shapes according to their oimo object, if it exists
+        if(shapes[i].oimo != undefined){
+
+        }
+
+        //Draw all shapes
+        shapes[i].shape.Draw(shader_1,shader_2,arg1,arg2,arg3,arg4);
     }
+    debugger;
 }
 
 requestAnimationFrame(Draw);

@@ -8,7 +8,7 @@ var world = new OIMO.World({
     gravity: [0,-9.8,0]//Setup the forces of gravity on XYZ; -9.8 on Y simulates Earth's Gravity (when `worldscale` is 1.0)
 });
 
-var particle = world.add({ 
+var o_particle = world.add({ 
     type:'sphere', // type of shape : sphere, box, cylinder 
     size:[1,1,1], // size of shape
     pos:[-10,20,0], // start position in degree
@@ -17,8 +17,9 @@ var particle = world.add({
     friction: 0.2,
     restitution: 0.5
 });
-particle.linearVelocity.x += 9.8;
-var ground = world.add({ 
+attachOimoObjectToShape(o_particle,'projectile');
+o_particle.linearVelocity.x += 9.8;
+var o_ground = world.add({ 
     type:'box', // type of shape : sphere, box, cylinder 
     size:[20,2,20], // size of shape
     pos:[0,0,0], // start position in degree
@@ -27,7 +28,8 @@ var ground = world.add({
     friction: 0.2,
     restitution: 1
 });
-var wall = world.add({ 
+attachOimoObjectToShape(o_ground,'ground');
+var o_wall = world.add({ 
     type:'box', // type of shape : sphere, box, cylinder 
     size:[2,10,20], // size of shape
     pos:[9,6,0], // start position in degree
@@ -39,7 +41,7 @@ var wall = world.add({
 
 function HelloWorld(now){
     world.step();
-    if(particle.pos.y > -10)
+    if(o_particle.pos.y > -10)
         requestAnimationFrame(HelloWorld);
     else
         console.log('particle below y = -10');
