@@ -1,11 +1,16 @@
 var canvas = document.getElementById('glcanvas');
 var gl = canvas.getContext('webgl2');
 
+var shapes = [];
+
 var colorfulShader = new Shader("colorful_vertex_shader", "colorful_fragment_shader");
 var solidShader = new Shader("solid_vertex_shader", "solid_fragment_shader");
 
-var currentShape = new Cube();
-console.log(currentShape);
+var projectile_3d = new Cube();
+shapes.push(projectile_3d);
+
+var ground_3d = new Cube();
+shapes.push(ground_3d);
 
 function Draw(now)
 {
@@ -23,11 +28,12 @@ function Draw(now)
     var mdv = mat4.create();
     mat4.lookAt(mdv, [0.0, 0.0, 10.0], [0.0, 0.0, 0.0], [0.0, 1.0, 0.0]);
 
+
     if (!viewmode.wireframe){
         gl.useProgram(colorfulShader.GetProgram());
         gl.uniformMatrix4fv(colorfulShader.program.projection_matrix_handle, false, prj);
         gl.uniformMatrix4fv(colorfulShader.program.modelview_matrix_handle, false, mdv);
-        currentShape.Draw(colorfulShader, solidShader, true, false, false, false);
+        drawAllShapes(colorfulShader,solidShader,true,false,false,false);
     }
 
     if (viewmode.wireframe || viewmode.triangles){
@@ -35,7 +41,7 @@ function Draw(now)
         gl.uniformMatrix4fv(solidShader.program.projection_matrix_handle, false, prj);
         gl.uniformMatrix4fv(solidShader.program.modelview_matrix_handle, false, mdv);
         gl.uniform3fv(solidShader.program.color_uniform_handle, [0.5, 1, 1]);
-        currentShape.Draw(colorfulShader, solidShader, false, false, viewmode.wireframe, viewmode.triangles);
+        drawAllShapes(colorfulShader,solidShader,true,false,viewmode.wireframe,viewmode.triangles);
     }
 
     if (viewmode.normals){
@@ -43,18 +49,19 @@ function Draw(now)
         gl.uniformMatrix4fv(solidShader.program.projection_matrix_handle, false, prj);
         gl.uniformMatrix4fv(solidShader.program.modelview_matrix_handle, false, mdv);
         gl.uniform3fv(solidShader.program.color_uniform_handle, [0.5, 1, 1]);
-        currentShape.Draw(colorfulShader, solidShader, false, true, false, false);
+        drawAllShapes(colorfulShader,solidShader,false,true,false,false);
     }
 
-    if (false){
-        gl.useProgram(colorfulShader.GetProgram());
-        gl.uniformMatrix4fv(currentShader.projection_matrix_handle, false, prj);
-        gl.uniformMatrix4fv(currentShader.modelview_matrix_handle, false, mdv);
-        currentShape.Draw(colorfulShader, solidShader, true, false, false, false);
-    }
     gl.useProgram(null);
 
     requestAnimationFrame(Draw);
+}
+
+
+function drawAllShapes(shader_1,shader_2,arg1,arg2,arg3,arg4){
+    for(i in shapes){
+        shapes[i].Draw(shader_1,shader_2,arg1,arg2,arg3,arg4);
+    }
 }
 
 requestAnimationFrame(Draw);
