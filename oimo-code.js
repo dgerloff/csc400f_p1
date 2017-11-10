@@ -11,14 +11,14 @@ var world = new OIMO.World({
 var o_particle = world.add({ 
     type:'sphere', // type of shape : sphere, box, cylinder 
     size:[1,1,1], // size of shape
-    pos:[-10,20,0], // start position in degree
+    pos:[-10,15,0], // start position in degree
     move:true, // dynamic or static
     density: 1,
     friction: 0.2,
     restitution: 0.5
 });
 attachOimoObjectToShape(o_particle,'projectile');
-o_particle.linearVelocity.x += 9.8;
+o_particle.linearVelocity.x += 5;
 var o_ground = world.add({ 
     type:'box', // type of shape : sphere, box, cylinder 
     size:[20,2,20], // size of shape
@@ -26,26 +26,20 @@ var o_ground = world.add({
     move:false, // dynamic or static
     density: 1,
     friction: 0.2,
-    restitution: 1
+    restitution: 0.5
 });
 attachOimoObjectToShape(o_ground,'ground');
-var o_wall = world.add({ 
-    type:'box', // type of shape : sphere, box, cylinder 
-    size:[2,10,20], // size of shape
-    pos:[9,6,0], // start position in degree
-    move:false, // dynamic or static
-    density: 1,
-    friction: 0.2,
-    restitution: 1
-});
 
-function HelloWorld(now){
+function OimoMain(now){
     world.step();
-    if(o_particle.pos.y > -10)
-        requestAnimationFrame(HelloWorld);
-    else
-        console.log('particle below y = -10');
+    if(o_particle.pos.y < -10){
+        //Reset the particle
+        o_particle.resetPosition(-10, 15, 0);
+        o_particle.resetRotation(45, 45, 45);
+        o_particle.linearVelocity.set(5, 0, 0);
+    }
+    requestAnimationFrame(OimoMain);
 }
 
-requestAnimationFrame(HelloWorld);
+requestAnimationFrame(OimoMain);
 
