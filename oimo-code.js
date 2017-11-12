@@ -12,10 +12,11 @@ var o_particle = world.add({
     type: 'box', // type of shape : sphere, box, cylinder 
     size: [1, 1, 1], // size of shape
     pos: [-10, 15, 0], // start position in degree
+    rot:[45,0,45], //rotation, in degrees
     move: true, // dynamic or static
     density: 1,
     friction: 0.2,
-    restitution: 0.5
+    restitution: 0.9
 });
 attachOimoObjectToShape(o_particle, 'projectile');
 o_particle.linearVelocity.x += 5;
@@ -26,7 +27,7 @@ var o_ground = world.add({
     move: false, // dynamic or static
     density: 1,
     friction: 0.2,
-    restitution: 0.5
+    restitution: 0.9
 });
 attachOimoObjectToShape(o_ground,'ground');
 
@@ -35,7 +36,7 @@ function OimoMain(now) {
     if (o_particle.pos.y < -10) {
         //Reset the particle
         o_particle.resetPosition(-10, 15, 0);
-        o_particle.resetRotation(45, 45, 45);
+        o_particle.resetRotation(45, 0, 45);
         o_particle.linearVelocity.set(5, 0, 0);
     }
     requestAnimationFrame(OimoMain);
