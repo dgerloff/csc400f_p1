@@ -5,10 +5,10 @@ var colorfulShader = new Shader("colorful_vertex_shader", "colorful_fragment_sha
 var solidShader = new Shader("solid_vertex_shader", "solid_fragment_shader");
 
 var projectile_model = new Cube();
-shapes.push({ "name": 'projectile', "shape": projectile_model });
+registerShape('projectile',projectile_model);
 
 var ground_model = new Cube();
-shapes.push({ "name": 'ground', "shape": ground_model });
+registerShape('ground',ground_model);
 
 //Projection matrix
 var prj = mat4.create();
