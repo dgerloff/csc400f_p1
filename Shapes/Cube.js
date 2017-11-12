@@ -1,21 +1,18 @@
-class Cube extends Shape
-{
-    constructor()
-    {
+class Cube extends Shape {
+    constructor() {
         super(false);
         this.type = "Cube";
 
         this.colors = [];
 
-        var c1 = [1,0,0];
-        var c2 = [0,1,0];
-        var c3 = [0,0,1];
-        for (let i=0;i<36;i+=3){
+        var c1 = [1, 0, 0];
+        var c2 = [0, 1, 0];
+        var c3 = [0, 0, 1];
+        for (let i = 0; i < 36; i += 3) {
             PushVertex(this.colors, c1);
             PushVertex(this.colors, c2);
             PushVertex(this.colors, c3);
         }
-        
 
         this.Initialize();
     }
@@ -30,15 +27,14 @@ class Cube extends Shape
     }
 
     Initialize() {
-        
         this.CreateBuffers();
 
         // Each face of the cube is made of four vertices. The
         // length of a side is 1 ranging from -0.5 to 0.5. 
-        var v00 = vec3.fromValues(-0.5,  0.5, 0);
-        var v01 = vec3.fromValues( 0.5,  0.5, 0);
+        var v00 = vec3.fromValues(-0.5, 0.5, 0);
+        var v01 = vec3.fromValues(0.5, 0.5, 0);
         var v10 = vec3.fromValues(-0.5, -0.5, 0);
-        var v11 = vec3.fromValues( 0.5, -0.5, 0);
+        var v11 = vec3.fromValues(0.5, -0.5, 0);
 
         var m1 = mat4.create();
         var m2 = mat4.create();
@@ -46,14 +42,13 @@ class Cube extends Shape
         var w01 = vec3.create();
         var w10 = vec3.create();
         var w11 = vec3.create();
-        var za  = vec3.create();
+        var za = vec3.create();
 
         // Rotate m1 by 90 degrees, saving m1 as we go.
         // Then, translate down the z axis by 0.5 (half
         // the length of a side.
         // Then, instantiate the upper and lower traingles.
-        for (var i = 0; i < 4; i++)
-        {
+        for (var i = 0; i < 4; i++) {
             mat4.rotate(m1, m1, Radians(90), y_axis);
             mat4.translate(m2, m1, vec3.fromValues(0, 0, 0.5));
 
@@ -68,12 +63,11 @@ class Cube extends Shape
 
             this.PushTextureCoordinates();
         }
-        
+
         // Similarly, make a top and bottom.
         m1 = mat4.create();
         mat4.rotate(m1, m1, Radians(90), x_axis);
-        for (var i = 0; i < 2; i++)
-        {
+        for (var i = 0; i < 2; i++) {
             mat4.rotate(m1, m1, Radians(180), x_axis);
             mat4.translate(m2, m1, vec3.fromValues(0, 0, 0.5));
 
@@ -91,8 +85,7 @@ class Cube extends Shape
 
         // Every nine floats are taken to be one triangle. This loop adds
         // line segments outlining each leg of each triangle.
-        for (var triangle_index = 0; triangle_index < this.triangle_vrts.length / 9; triangle_index++)
-        {
+        for (var triangle_index = 0; triangle_index < this.triangle_vrts.length / 9; triangle_index++) {
             var base_index = triangle_index * 9;
             var v0 = vec3.fromValues(this.triangle_vrts[base_index + 0], this.triangle_vrts[base_index + 1], this.triangle_vrts[base_index + 2]);
             var v1 = vec3.fromValues(this.triangle_vrts[base_index + 3], this.triangle_vrts[base_index + 4], this.triangle_vrts[base_index + 5]);
@@ -105,7 +98,7 @@ class Cube extends Shape
             PushVertex(this.line_segment_vrts, v2);
             PushVertex(this.line_segment_vrts, v0);
         }
-        
+
 
         this.BindBuffers();
     }
