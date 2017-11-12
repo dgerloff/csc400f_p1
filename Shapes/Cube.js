@@ -5,9 +5,9 @@ class Cube extends Shape {
 
         this.colors = [];
 
-        var c1 = [1, 0, 0];
-        var c2 = [0, 1, 0];
-        var c3 = [0, 0, 1];
+        var c1 = [0.8, 0, 0];
+        var c2 = [0, 0.8, 0];
+        var c3 = [0, 0, 0.8];
         for (let i = 0; i < 36; i += 3) {
             PushVertex(this.colors, c1);
             PushVertex(this.colors, c2);

@@ -9,7 +9,7 @@ var world = new OIMO.World({
 });
 
 var o_particle = world.add({
-    type: 'sphere', // type of shape : sphere, box, cylinder 
+    type: 'box', // type of shape : sphere, box, cylinder 
     size: [1, 1, 1], // size of shape
     pos: [-10, 15, 0], // start position in degree
     move: true, // dynamic or static
