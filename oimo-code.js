@@ -52,6 +52,7 @@ function reset_projectile(){
 }
 function reset_wall(origin){
     if(origin === undefined){
+        console.log('resetting wall @ [10,1,0]');
         origin = [10,1,0];
     }
     for(i in shapes){//Clear out all old bricks
@@ -83,7 +84,7 @@ function reset_wall(origin){
                 pos: brick_pos,
                 move: true, 
                 density: 1,
-                friction: 0.5,
+                friction: 1,
                 restitution: 0
             });
             attachOimoObjectToShape(brick_id,brick_oimo);
