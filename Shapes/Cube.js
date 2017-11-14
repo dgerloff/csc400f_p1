@@ -1,17 +1,34 @@
 class Cube extends Shape {
-    constructor() {
+    constructor(color) {
         super(false);
         this.type = "Cube";
 
         this.colors = [];
 
-        var c1 = [1, 0, 0];
-        var c2 = [0, 1, 0];
-        var c3 = [0, 0, 1];
-        for (let i = 0; i < 36; i += 3) {
-            PushVertex(this.colors, c1);
-            PushVertex(this.colors, c2);
-            PushVertex(this.colors, c3);
+        if(color === undefined || color == null){
+            var c1 = [1, 0, 0];
+            var c2 = [0, 1, 0];
+            var c3 = [0, 0, 1];
+            for (let i = 0; i < 36; i += 3) {
+                PushVertex(this.colors, c1);
+                PushVertex(this.colors, c2);
+                PushVertex(this.colors, c3);
+            }
+        } else if(typeof(color) === 'boolean') {
+            var c1 = [Math.random(),Math.random(),Math.random()];
+            for (let i = 0; i < 36; i += 3) {
+                PushVertex(this.colors, c1);
+                PushVertex(this.colors, c1);
+                PushVertex(this.colors, c1);
+            }
+        }
+        else if(typeof(color) === 'object' && color.length === 3) {
+            var c1 = [color[0],color[1],color[2]];
+            for (let i = 0; i < 36; i += 3) {
+                PushVertex(this.colors, c1);
+                PushVertex(this.colors, c1);
+                PushVertex(this.colors, c1);
+            }
         }
 
         this.Initialize();

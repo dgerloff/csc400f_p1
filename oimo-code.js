@@ -10,11 +10,11 @@ var world = new OIMO.World({
 
 var o_particle = world.add({
     type: 'box', // type of shape : sphere, box, cylinder 
-    size: [1, 1, 1], // size of shape
+    size: [1.5,1.5,1.5], // size of shape
     pos: [-10, 15, 0], // start position in degree
     rot:[45,0,0], //rotation, in degrees
     move: true, // dynamic or static
-    density: 9001,
+    density: 20,
     friction: 0.2,
     restitution: 0.8
 });
@@ -72,7 +72,7 @@ function setup_wall(origin){
                     origin[2]-(wall_length)+(c*brick_size)+(offset?b_x:0)+(offset&&c==0?b_z/2:0)-(offset&&c==(wall_length-1)?b_z/2:0)
                 ];
     
-                var brick_model = new Cube();
+                var brick_model = new Cube(true);
                 registerShape(brick_id,brick_model);
                 var brick_oimo = world.add({
                     type: 'box',
