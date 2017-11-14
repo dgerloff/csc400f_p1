@@ -7,7 +7,7 @@ var solidShader = new Shader("solid_vertex_shader", "solid_fragment_shader");
 var projectile_model = new Cube([1,0,0]);
 registerShape('projectile',projectile_model);
 
-var ground_model = new Cube();
+var ground_model = new Cube([0.3,0.3,0.3]);
 registerShape('ground',ground_model);
 
 //Projection matrix
@@ -25,7 +25,7 @@ function Draw(now) {
     mat4.perspective(prj, Radians(90.0), canvas.width / canvas.height, 0.5, 1000.0);
 
     var mdv = mat4.create();
-    mat4.lookAt(mdv, [-5, 5.0, 0.0], [0.0, 5.0, 0.0], [0.0, 5.0, 0.0]);
+    mat4.lookAt(mdv, [-10, 5.0, 0.0], [0.0, 5.0, 0.0], [0.0, 5.0, 0.0]);
 
     if (!viewmode.wireframe) {
         gl.useProgram(colorfulShader.program);
