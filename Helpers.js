@@ -29,7 +29,7 @@ document.addEventListener('keydown',function(e){
             case 78:
                 viewmode.normals=!viewmode.normals;
                 break;
-            case 87:
+            case 84:
                 viewmode.triangles=!viewmode.triangles;
                 break;
             default:

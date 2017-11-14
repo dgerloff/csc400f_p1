@@ -25,7 +25,7 @@ function Draw(now) {
     mat4.perspective(prj, Radians(90.0), canvas.width / canvas.height, 0.5, 1000.0);
 
     var mdv = mat4.create();
-    mat4.lookAt(mdv, [0.0, 5.0, 17.0], [0.0, 5.0, 0.0], [0.0, 5.0, 0.0]);
+    mat4.lookAt(mdv, [-5, 5.0, 0.0], [0.0, 5.0, 0.0], [0.0, 5.0, 0.0]);
 
     if (!viewmode.wireframe) {
         gl.useProgram(colorfulShader.program);

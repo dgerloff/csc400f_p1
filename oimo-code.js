@@ -14,7 +14,7 @@ var o_particle = world.add({
     pos: [-10, 15, 0], // start position in degree
     rot:[45,0,0], //rotation, in degrees
     move: true, // dynamic or static
-    density: 5,
+    density: 9001,
     friction: 0.2,
     restitution: 0.8
 });
@@ -45,33 +45,47 @@ function OimoMain(now) {
 requestAnimationFrame(OimoMain);
 
 function setup_wall(origin){
-    var brick_size = 1;
+    var brick_size = 2;
     var brick_radius = brick_size/2;
-    var wall_length = 20;
+    var wall_length = 10;
     var wall_height = 10;
     //Build up a wall, "centered" on the given `origin` (bottom middle)
-    for(var c=0;c<wall_length;c++){
-        for(var r=0;r<wall_height;r++){
-            var brick_id = 'brick_'+r+'_'+c;
-            var brick_pos = [
-                origin[0]-brick_radius,
-                origin[1]+brick_radius+(r*brick_size),
-                origin[2]-(wall_length*brick_radius)+((c/(wall_length/2)) * (wall_length*brick_radius) )
-            ];
-
-            var brick_model = new Cube();
-            registerShape(brick_id,brick_model);
-            var brick_oimo = world.add({
-                type: 'box',
-                size: [brick_size,brick_size,brick_size],
-                pos: brick_pos,
-                move: true, 
-                density: 1,
-                friction: 1,
-                restitution: 0,
-                sleeping:true
-            });
-            attachOimoObjectToShape(brick_id,brick_oimo,brick_pos);
+    for(var r=0;r<wall_height;r++){
+        var offset = (r+1) % 2 == 0;
+        for(var c=0;c<wall_length;c++){
+            if(!offset && c == 0){
+                // skip the first block in every non-offset row
+            } else {
+                var brick_id = 'brick_'+r+'_'+c;
+                
+                var b_x = brick_radius,
+                b_y = brick_radius,
+                b_z = brick_size;
+                
+                if(offset && (c==0 || c == wall_length-1)){
+                    b_z = brick_radius;
+                }
+            
+                var brick_pos = [
+                    origin[0]-b_x,
+                    origin[1]+(r*b_y)+(b_y/2),
+                    origin[2]-(wall_length)+(c*brick_size)+(offset?b_x:0)+(offset&&c==0?b_z/2:0)-(offset&&c==(wall_length-1)?b_z/2:0)
+                ];
+    
+                var brick_model = new Cube();
+                registerShape(brick_id,brick_model);
+                var brick_oimo = world.add({
+                    type: 'box',
+                    size: [b_x,b_y,b_z],
+                    pos: brick_pos,
+                    move: true, 
+                    density: 1,
+                    friction: 1,
+                    restitution: 0,
+                    sleeping:true
+                });
+                attachOimoObjectToShape(brick_id,brick_oimo,brick_pos);
+            }
         }
     }
 }
