@@ -19,7 +19,7 @@ var o_particle = world.add({
     restitution: 0.8
 });
 attachOimoObjectToShape('projectile',o_particle);
-o_particle.linearVelocity.x += 9.8;
+o_particle.linearVelocity.x += 11;
 var o_ground = world.add({
     type: 'box', // type of shape : sphere, box, cylinder 
     size: [20, 2, 40], // size of shape
@@ -32,8 +32,7 @@ var o_ground = world.add({
 attachOimoObjectToShape('ground',o_ground);
 
 //Setup wall for first time
-reset_wall([10,1,0]);
-
+setup_wall([10,1,0]);
 
 function OimoMain(now) {
     world.step();
@@ -45,23 +44,7 @@ function OimoMain(now) {
 
 requestAnimationFrame(OimoMain);
 
-function reset_projectile(){
-    o_particle.resetPosition(-10, 15, 0);
-    o_particle.resetRotation(45, 0, 45);
-    o_particle.linearVelocity.set(9.8, 0, 0);
-}
-function reset_wall(origin){
-    if(origin === undefined){
-        console.log('resetting wall @ [10,1,0]');
-        origin = [10,1,0];
-    }
-    for(i in shapes){//Clear out all old bricks
-        if(shapes[i].name.indexOf('brick') !== -1){
-            shapes[i]["oimo"] = null;
-            shapes[i]["shape"] = null;
-            shapes.splice(i,1);
-        }
-    }
+function setup_wall(origin){
     var brick_size = 1;
     var brick_radius = brick_size/2;
     var wall_length = 20;
@@ -85,9 +68,26 @@ function reset_wall(origin){
                 move: true, 
                 density: 1,
                 friction: 1,
-                restitution: 0
+                restitution: 0,
+                sleeping:true
             });
-            attachOimoObjectToShape(brick_id,brick_oimo);
+            attachOimoObjectToShape(brick_id,brick_oimo,brick_pos);
+        }
+    }
+}
+
+function reset_projectile(){
+    o_particle.resetPosition(-10, 15, 0);
+    o_particle.resetRotation(45, 0, 45);
+    o_particle.linearVelocity.set(9.8, 0, 0);
+}
+function reset_wall(){
+    for(i in shapes){//Reset all old bricks
+        if(shapes[i].name.indexOf('brick') !== -1){
+            var o = shapes[i]["oimo"];
+            var o_pos = shapes[i]["spawn_pos"];
+            o.resetRotation(0,0,0);
+            o.resetPosition(o_pos[0],o_pos[1],o_pos[2]);
         }
     }
 }

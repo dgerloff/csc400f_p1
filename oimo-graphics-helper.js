@@ -1,9 +1,10 @@
 
 var shapes = [];
-function attachOimoObjectToShape(shape_id,oimo_object){
+function attachOimoObjectToShape(shape_id,oimo_object,original_location){
     for(i in shapes){
         if(shapes[i].name == shape_id){
             shapes[i]["oimo"] = oimo_object;
+            shapes[i]["spawn_pos"] = original_location;
         }
     }
 }
