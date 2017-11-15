@@ -34,7 +34,7 @@ function Draw(now) {
     gl.uniformMatrix4fv(solidShader.program.projection_matrix_handle, false, prj);
     gl.uniformMatrix4fv(solidShader.program.modelview_matrix_handle, false, mdv);
     gl.uniform3fv(solidShader.program.color_uniform_handle, [0.5, 1, 1]);
-    drawAllShapes(mdv, solidShader.program, colorfulShader, solidShader, true, false, true, true);
+    drawAllShapes(mdv, solidShader.program, colorfulShader, solidShader, false, false, true, false);
 
     if (viewmode.normals) {
         gl.useProgram(solidShader.program);
@@ -65,8 +65,6 @@ function drawAllShapes(mdv, shader_program, shader_1, shader_2, arg1, arg2, arg3
             mat4.multiply(m, mdv, m);
             mat4.scale(m, m, [shape.oimo.shapes.width, shape.oimo.shapes.height, shape.oimo.shapes.depth]);
             gl.uniformMatrix4fv(shader_program.modelview_matrix_handle, false, m);
-
-            gl.drawArrays(gl.TRIANGLES, 0, shape.shape.triangle_vrts.length / 3);
         }
 
         //Draw all shapes

@@ -15,6 +15,9 @@ function enableKeyboardControls(){
 
 document.addEventListener('keydown',function(e){
     switch(e.keyCode){
+        case 82:
+            reset_wall();
+            break;
         case 32:
             launchProjectile();
             break;
