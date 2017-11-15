@@ -30,9 +30,6 @@ var o_ground = world.add({
 });
 attachOimoObjectToShape('ground',o_ground);
 
-//Setup wall for first time
-setup_wall([10,1,0]);
-
 //Call for the first frame & repeat
 function OimoMain(now) {
     world.step();
@@ -47,11 +44,24 @@ function launchProjectile(){
     o_particle.linearVelocity.x += launcher_power;
 }
 
+var shape_groups = {
+    bricks:{
+        start: -1,
+        end: -1
+    },
+    projectiles:{
+        start:-1,
+        end:-1
+    }
+}
+//Setup wall for first time
+setup_wall([10,1,0]);
 function setup_wall(origin){
+    shape_groups["bricks"]["start"] = shapes.length;
     var brick_size = 2;
     var brick_radius = brick_size/2;
-    var wall_length = 10;
-    var wall_height = 10;
+    var wall_length = 15;
+    var wall_height = 15;
     //Build up a wall, "centered" on the given `origin` (bottom middle)
     for(var r=0;r<wall_height;r++){
         var offset = (r+1) % 2 == 0;
@@ -91,14 +101,17 @@ function setup_wall(origin){
             }
         }
     }
+    shape_groups["bricks"]["end"] = shapes.length;
 }
 function reset_wall(){
-    for(i in shapes){//Reset all old bricks
-        if(shapes[i].name.indexOf('brick') !== -1){
-            var o = shapes[i]["oimo"];
-            var o_pos = shapes[i]["spawn_pos"];
-            o.resetRotation(0,0,0);
-            o.resetPosition(o_pos[0],o_pos[1],o_pos[2]);
+    if(shape_groups["bricks"]["start"] !== -1 && shape_groups["bricks"]["end"] !== -1 ){
+        for(var i=shape_groups["bricks"]["start"];i<shape_groups["bricks"]["end"];i++){//Reset all old bricks
+            if(shapes[i].name.indexOf('brick') !== -1){
+                var o = shapes[i]["oimo"];
+                var o_pos = shapes[i]["spawn_pos"];
+                o.resetRotation(0,0,0);
+                o.resetPosition(o_pos[0],o_pos[1],o_pos[2]);
+            }
         }
     }
 }
