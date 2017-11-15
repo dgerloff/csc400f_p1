@@ -14,7 +14,7 @@ var o_ground = world.add({
     pos: [0, 0, 0], // start position in degree
     move: false, // dynamic or static
     density: 1,
-    friction: 0.2,
+    friction: 1,
     restitution: 0.9,
     belongsTo:2
 });
@@ -116,8 +116,8 @@ function setup_wall(origin){
                     size: [b_x,b_y,b_z],
                     pos: brick_pos,
                     move: true, 
-                    density: 1,
-                    friction: 1,
+                    density: 0.5,
+                    friction: 0.1,
                     restitution: 0,
                     sleeping:true,
                     belongsTo:2
