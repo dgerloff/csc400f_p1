@@ -19,7 +19,6 @@ var o_particle = world.add({
     restitution: 0.8
 });
 attachOimoObjectToShape('projectile',o_particle);
-o_particle.linearVelocity.x += 11;
 var o_ground = world.add({
     type: 'box', // type of shape : sphere, box, cylinder 
     size: [20, 2, 40], // size of shape
@@ -34,15 +33,19 @@ attachOimoObjectToShape('ground',o_ground);
 //Setup wall for first time
 setup_wall([10,1,0]);
 
+//Call for the first frame & repeat
 function OimoMain(now) {
     world.step();
-    if(o_particle.pos.y < -5){
-        reset_projectile();
-    }
     requestAnimationFrame(OimoMain);
 }
-
 requestAnimationFrame(OimoMain);
+
+
+function launchProjectile(){
+    o_particle.resetPosition(-10,15,0);
+    o_particle.resetRotation(45,0,0);
+    o_particle.linearVelocity.x += launcher_power;
+}
 
 function setup_wall(origin){
     var brick_size = 2;
@@ -88,12 +91,6 @@ function setup_wall(origin){
             }
         }
     }
-}
-
-function reset_projectile(){
-    o_particle.resetPosition(-10, 15, 0);
-    o_particle.resetRotation(45, 0, 45);
-    o_particle.linearVelocity.set(9.8, 0, 0);
 }
 function reset_wall(){
     for(i in shapes){//Reset all old bricks

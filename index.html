@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<style>	
-			*{margin:0;padding:0;box-sizing:border-box;}
+			*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, Helvetica, sans-serif;}
 			h1
 			{	
 				font-family: verdana;
@@ -26,6 +26,16 @@
 			#controls > * + *{
 				margin-left:16px;
 			}
+			#sliders{
+				display:flex;
+				flex-direction:column;
+			}
+			.row{
+				display:flex;
+			}
+			.row > * + *{
+				margin-left:8px;
+			}
 		</style>
 	<title>Brick Wall Project</title>
 	</head>
@@ -34,7 +44,28 @@
 			<canvas width = "768" height = "432" id = "glcanvas">
 				Support for the canvas element is required.
 			</canvas>
+
+			<div id="sliders">
+				<div class="row">
+					<span>Power</span>
+					<input type="range" min="0" max="60" step="2" value="10" id="slider-power" oninput="updateSlider(this.value,'power')" onchange="updateSlider(this.value,'power')"></input>
+					<span id="val-power">10</span>
+				</div>
+				<div class="row">
+					<span>Elevation</span>
+					<input type="range" min="-10" max="10" step="0.5" value="0" id="slider-elevation" oninput="updateSlider(this.value,'elevation')" onchange="updateSlider(this.value,'elevation')"></input>
+					<span id="val-elevation">0</span>
+				</div>
+				<div class="row">
+					<span>Azimuth</span>
+					<input type="range" min="-10" max="10" step="0.5" value="0" id="slider-azimuth" oninput="updateSlider(this.value,'azimuth')" onchange="updateSlider(this.value,'azimuth')"></input>
+					<span id="val-azimuth">0</span>
+				</div>
+			</div>
 		</div>
+
+		<script src="sliders.js"></script>
+
 		<script src="p1utilities.js"></script>
 		<script src="Helpers.js"></script>
 		<script src='gl-matrix-min.js'></script>
@@ -50,5 +81,6 @@
 		<script src="oimo-graphics-helper.js"></script>
 		<script src="graphics-code.js"></script>
 		<script src="oimo-code.js"></script>
+
 	</body>
 </html>

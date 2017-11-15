@@ -23,6 +23,9 @@ enableKeyboardControls();
 document.addEventListener('keydown',function(e){
     if(shortcutsEnabled){
         switch(e.keyCode){
+            case 32:
+                launchProjectile();
+                break;
             case 87:
                 viewmode.wireframe=!viewmode.wireframe;
                 break;
