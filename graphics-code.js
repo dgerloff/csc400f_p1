@@ -22,22 +22,19 @@ function Draw(now) {
     mat4.perspective(prj, Radians(90.0), canvas.width / canvas.height, 0.5, 1000.0);
 
     var mdv = mat4.create();
-    mat4.lookAt(mdv, [-10, 5.0, 0.0], [0.0, 5.0, 0.0], [0.0, 5.0, 0.0]);
+    mat4.lookAt(mdv, [-15, 5.0, 0.0], [0.0, 5.0, 0.0], [0.0, 5.0, 0.0]);
 
-    if (!viewmode.wireframe) {
-        gl.useProgram(colorfulShader.program);
-        gl.uniformMatrix4fv(colorfulShader.program.projection_matrix_handle, false, prj);
-        gl.uniformMatrix4fv(colorfulShader.program.modelview_matrix_handle, false, mdv);
-        drawAllShapes(mdv, colorfulShader.program, colorfulShader, solidShader, true, false, false, false);
-    }
-
-    if (viewmode.wireframe || viewmode.triangles) {
-        gl.useProgram(solidShader.program);
-        gl.uniformMatrix4fv(solidShader.program.projection_matrix_handle, false, prj);
-        gl.uniformMatrix4fv(solidShader.program.modelview_matrix_handle, false, mdv);
-        gl.uniform3fv(solidShader.program.color_uniform_handle, [0.5, 1, 1]);
-        drawAllShapes(mdv, solidShader.program, colorfulShader, solidShader, true, false, viewmode.wireframe, viewmode.triangles);
-    }
+    //Draw colors
+    gl.useProgram(colorfulShader.program);
+    gl.uniformMatrix4fv(colorfulShader.program.projection_matrix_handle, false, prj);
+    gl.uniformMatrix4fv(colorfulShader.program.modelview_matrix_handle, false, mdv);
+    drawAllShapes(mdv, colorfulShader.program, colorfulShader, solidShader, true, false, false, false);
+    //Draw outlines
+    gl.useProgram(solidShader.program);
+    gl.uniformMatrix4fv(solidShader.program.projection_matrix_handle, false, prj);
+    gl.uniformMatrix4fv(solidShader.program.modelview_matrix_handle, false, mdv);
+    gl.uniform3fv(solidShader.program.color_uniform_handle, [0.5, 1, 1]);
+    drawAllShapes(mdv, solidShader.program, colorfulShader, solidShader, true, false, true, true);
 
     if (viewmode.normals) {
         gl.useProgram(solidShader.program);

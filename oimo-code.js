@@ -16,7 +16,7 @@ var o_ground = world.add({
     density: 1,
     friction: 0.2,
     restitution: 0.9,
-    belongsTo:6
+    belongsTo:2
 });
 attachOimoObjectToShape('ground',o_ground);
 
@@ -39,7 +39,7 @@ var shape_groups = {
     }
 }
 //Setup projectiles
-setup_projectiles(50,1.5);
+setup_projectiles(100,1.5);
 function setup_projectiles(projectile_count,projectile_size){
     shape_groups["projectiles"]["start"] = shapes.length;
     shape_groups["projectiles"]["next_index"] = shapes.length;
@@ -51,14 +51,14 @@ function setup_projectiles(projectile_count,projectile_size){
         var proj_oimo = world.add({
             type: 'box',
             size: [projectile_size,projectile_size,projectile_size],
-            pos: [-10, 15, 0],
+            pos: [-50, 15, 0],
             rot:[45,0,0],
             move: true, 
             density: 20,
             friction: 0.2,
             restitution: 0.8,
-            belongsTo:2,
-            collidesWith:6
+            belongsTo:1,
+            collidesWith:2
         });
         attachOimoObjectToShape(proj_id,proj_oimo);
     }
@@ -120,7 +120,7 @@ function setup_wall(origin){
                     friction: 1,
                     restitution: 0,
                     sleeping:true,
-                    belongsTo:6
+                    belongsTo:2
                 });
                 attachOimoObjectToShape(brick_id,brick_oimo,brick_pos);
             }

@@ -158,7 +158,6 @@ class Shape
 		{
 			//this.BindEnableAttribute(va, this.triangle_vrts_buffer, 3, gl.FLOAT);
 			line_shader.UseProgram();
-			//line_shader.SetStandardUniforms(mv, prj, nm, light_position, material, parameter);
 			line_shader.SetStandardAttributes(this.triangle_vrts_buffer, null, null, null);
 			if (this.indexed)
 			{	
@@ -167,13 +166,11 @@ class Shape
 				gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
 				if (this.line_segment_indicies_buffer == null || this.line_segment_indicies.length == 0)
 					throw 'Shape::Draw() - indices not initialized correctly.';
-				
 			}
 			else
 			{
 				gl.drawArrays(gl.LINES, 0, this.line_segment_vrts.length / 3);
 			}			
-			//gl.disableVertexAttribArray(va);
 			line_shader.DisableStandardAttributes();
 			line_shader.EndProgram();
 		}

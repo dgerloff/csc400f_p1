@@ -1,9 +1,7 @@
 function Radians(angle){return angle*(Math.PI/180)}
 
 var viewmode = {
-    wireframe:false,
-    normals:false,
-    triangles:false
+    normals:false
 };
 function enableKeyboardControls(){
     //Enables use of keyboard shortcuts
@@ -20,14 +18,8 @@ document.addEventListener('keydown',function(e){
         case 32:
             launchProjectile();
             break;
-        case 87:
-            viewmode.wireframe=!viewmode.wireframe;
-            break;
         case 78:
             viewmode.normals=!viewmode.normals;
-            break;
-        case 84:
-            viewmode.triangles=!viewmode.triangles;
             break;
         default:
             break;
