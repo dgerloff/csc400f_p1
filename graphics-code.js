@@ -4,9 +4,6 @@ var gl = canvas.getContext('webgl2');
 var colorfulShader = new Shader("colorful_vertex_shader", "colorful_fragment_shader");
 var solidShader = new Shader("solid_vertex_shader", "solid_fragment_shader");
 
-var projectile_model = new Cube([1,0,0]);
-registerShape('projectile',projectile_model);
-
 var ground_model = new Cube([0.3,0.3,0.3]);
 registerShape('ground',ground_model);
 

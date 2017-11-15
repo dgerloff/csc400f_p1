@@ -6,11 +6,12 @@ var pow_label = document.getElementById('val-power');
 var ele_label = document.getElementById('val-elevation');
 var azi_label = document.getElementById('val-azimuth');
 
-var launcher_power = pow_slider.value;
-var launcher_elevation = ele_slider.value;
-var launcher_azimuth = azi_slider.value;
+var launcher_power = parseFloat(pow_slider.value);
+var launcher_elevation = parseFloat(ele_slider.value);
+var launcher_azimuth = parseFloat(azi_slider.value);
 
 function updateSlider(value,prop){
+    value = parseFloat(value);
     switch (prop){
         case 'power':
             launcher_power = value;
