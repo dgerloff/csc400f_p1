@@ -111,10 +111,10 @@ function reset_projectiles(){
 setup_wall([10,1,0]);
 function setup_wall(origin){
     shape_groups["bricks"]["start"] = shapes.length;
-    var brick_size = 2;
+    var brick_size = 3;
     var brick_radius = brick_size/2;
     var wall_length = 15;
-    var wall_height = 15;
+    var wall_height = 10;
     //Build up a wall, "centered" on the given `origin` (bottom middle)
     for(var r=0;r<wall_height;r++){
         var offset = (r+1) % 2 === 0;
@@ -135,7 +135,7 @@ function setup_wall(origin){
                 var brick_pos = [
                     origin[0]-b_x,
                     origin[1]+(r*b_y)+(b_y/2),
-                    origin[2]-(wall_length)+(c*brick_size)+(offset?b_x:0)+(offset&&c==0?b_z/2:0)-(offset&&c==(wall_length-1)?b_z/2:0)
+                    origin[2]-(wall_length*b_x)+(c*brick_size)+(offset?b_x:0)+(offset&&c==0?b_z/2:0)-(offset&&c==(wall_length-1)?b_z/2:0)
                 ];
     
                 registerShape(brick_id,null);

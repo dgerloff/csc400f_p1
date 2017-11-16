@@ -19,11 +19,11 @@ function updateSlider(value,prop){
             break;
         case 'elevation':
             launcher_elevation = value;
-            ele_label.innerHTML = value;
+            ele_label.innerHTML = value.toFixed(1);
             break;
         case 'azimuth':
             launcher_azimuth = value;
-            azi_label.innerHTML = value;
+            azi_label.innerHTML = value.toFixed(1);
             break;
         default:
             break;
