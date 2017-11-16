@@ -72,6 +72,7 @@ class Cube extends Shape {
             this.PushTextureCoordinates();
         }
 
+        var flop = true;
         // Every nine floats are taken to be one triangle. This loop adds
         // line segments outlining each leg of each triangle.
         for (var triangle_index = 0; triangle_index < this.triangle_vrts.length / 9; triangle_index++) {
@@ -80,12 +81,25 @@ class Cube extends Shape {
             var v1 = vec3.fromValues(this.triangle_vrts[base_index + 3], this.triangle_vrts[base_index + 4], this.triangle_vrts[base_index + 5]);
             var v2 = vec3.fromValues(this.triangle_vrts[base_index + 6], this.triangle_vrts[base_index + 7], this.triangle_vrts[base_index + 8]);
 
-            PushVertex(this.line_segment_vrts, v0);
-            PushVertex(this.line_segment_vrts, v1);
-            PushVertex(this.line_segment_vrts, v1);
-            PushVertex(this.line_segment_vrts, v2);
-            PushVertex(this.line_segment_vrts, v2);
-            PushVertex(this.line_segment_vrts, v0);
+            if(flop ==true)
+            {
+                PushVertex(this.line_segment_vrts, v0);
+                PushVertex(this.line_segment_vrts, v1);
+                PushVertex(this.line_segment_vrts, v1);
+                PushVertex(this.line_segment_vrts, v2);
+                PushVertex(this.line_segment_vrts, v2);
+                //PushVertex(this.line_segment_vrts, v0);
+            }
+            else
+            {
+                //PushVertex(this.line_segment_vrts, v0);
+                PushVertex(this.line_segment_vrts, v1);
+                PushVertex(this.line_segment_vrts, v1);
+                PushVertex(this.line_segment_vrts, v2);
+                PushVertex(this.line_segment_vrts, v2);
+                PushVertex(this.line_segment_vrts, v0);
+            }
+            flop=!flop;
         }
 
 

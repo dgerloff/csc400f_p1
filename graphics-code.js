@@ -29,11 +29,14 @@ function Draw(now) {
     gl.uniformMatrix4fv(colorfulShader.program.modelview_matrix_handle, false, mdv);
     drawAllShapes(mdv, colorfulShader.program, colorfulShader, solidShader, true, false, false, false);
     //Draw outlines
-    gl.useProgram(solidShader.program);
-    gl.uniformMatrix4fv(solidShader.program.projection_matrix_handle, false, prj);
-    gl.uniformMatrix4fv(solidShader.program.modelview_matrix_handle, false, mdv);
-    gl.uniform3fv(solidShader.program.color_uniform_handle, [0.5, 1, 1]);
-    drawAllShapes(mdv, solidShader.program, colorfulShader, solidShader, false, false, true, false);
+    //Draw outlines
+    if(viewmode.outlines){
+        gl.useProgram(solidShader.program);
+        gl.uniformMatrix4fv(solidShader.program.projection_matrix_handle, false, prj);
+        gl.uniformMatrix4fv(solidShader.program.modelview_matrix_handle, false, mdv);
+        gl.uniform3fv(solidShader.program.color_uniform_handle, [0.5, 1, 1]);
+        drawAllShapes(mdv, solidShader.program, colorfulShader, solidShader, false, false, true, false);
+    }
 
     if (viewmode.normals) {
         gl.useProgram(solidShader.program);
