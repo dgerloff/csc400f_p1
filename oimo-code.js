@@ -127,7 +127,7 @@ function setup_wall(origin){
 }
 function reset_wall(){
     var sgb = shape_groups["bricks"];
-    if(sgb["start"] !== -1 && ["end"] !== -1 ){
+    if(sgb["start"] !== -1 && sgb["end"] !== -1 ){
         for(var i=sgb["start"];i<sgb["end"];i++){//Reset all old bricks
             if(shapes[i].id.indexOf('brick') !== -1){
                 var o = shapes[i]["oimo"];
