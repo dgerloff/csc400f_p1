@@ -144,8 +144,8 @@ function setup_wall(origin){
                     size: [b_x,b_y,b_z],
                     pos: brick_pos,
                     move: true, 
-                    density: 0.1,
-                    friction: 0.5,
+                    density: 10,
+                    friction: 0.2,
                     restitution: 0.05,
                     belongsTo:2
                 });
