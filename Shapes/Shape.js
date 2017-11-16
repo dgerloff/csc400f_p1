@@ -76,11 +76,8 @@ class Shape
 		}
 
 		// Colors are optional.
-		if (this.colors.length > 0)
-		{
-			gl.bindBuffer(gl.ARRAY_BUFFER, this.colors_buffer);        
-    	    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colors), gl.STATIC_DRAW);
-		}
+		// Handled in `.BindColorBuffers()`
+		this.BindColorBuffers();
 
 		if (this.indexed)
 		{
@@ -113,10 +110,14 @@ class Shape
 		}
 
 		gl.bindBuffer(gl.ARRAY_BUFFER, null);
-    }
+	}
+	
+	BindColorBuffers(){
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.colors_buffer);        
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.colors), gl.DYNAMIC_DRAW);
+	}
 
-	BindEnableAttribute(attribute, buffer, number, type)
-	{
+	BindEnableAttribute(attribute, buffer, number, type){
 		gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 		gl.vertexAttribPointer(attribute, number, type, false, 0, 0);
 		gl.enableVertexAttribArray(attribute);
@@ -125,8 +126,7 @@ class Shape
 	// Draw will change a lot when a shader class is created. Shaders are then passed here
 	// as parameters permitting them to be mixed and matched. This simplified Draw assumes
 	// the caller has already set up the appropriate shaders.
-    Draw(face_shader, line_shader, draw_faces, draw_normals, draw_wireframe, show_triangles)
-    {
+    Draw(face_shader, line_shader, draw_faces, draw_normals, draw_wireframe, show_triangles){
 		if (draw_faces)
 		{
 			face_shader.UseProgram();
@@ -186,5 +186,18 @@ class Shape
 			line_shader.DisableStandardAttributes();
 			line_shader.EndProgram();
 		}
+	}
+	
+	SetColor(color){
+        this.colors = [];
+        if(color.length !== 3){
+            color = [Math.random(),Math.random(),Math.random()];
+        }
+        for (let i = 0; i < 12; i++) {
+            PushVertex(this.colors, color);
+            PushVertex(this.colors, color);
+            PushVertex(this.colors, color);
+        }
+        this.BindColorBuffers();
     }
 }

@@ -46,12 +46,11 @@ function setup_projectiles(projectile_count,projectile_size){
     for(var i=0;i<projectile_count;i++){
         var proj_id = 'proj_'+i;
 
-        var proj_model = new Cube([1,0,0]);
-        registerShape(proj_id,proj_model);
+        registerShape(proj_id,[1,0,0]);
         var proj_oimo = world.add({
             type: 'box',
             size: [projectile_size,projectile_size,projectile_size],
-            pos: [-50, 15, 0],
+            pos: [-50, 10, 0],
             rot:[45,0,0],
             move: true, 
             density: 20,
@@ -88,7 +87,7 @@ function setup_wall(origin){
     var wall_height = 15;
     //Build up a wall, "centered" on the given `origin` (bottom middle)
     for(var r=0;r<wall_height;r++){
-        var offset = (r+1) % 2 == 0;
+        var offset = (r+1) % 2 === 0;
         for(var c=0;c<wall_length;c++){
             if(!offset && c == 0){
                 // skip the first block in every non-offset row
@@ -109,17 +108,15 @@ function setup_wall(origin){
                     origin[2]-(wall_length)+(c*brick_size)+(offset?b_x:0)+(offset&&c==0?b_z/2:0)-(offset&&c==(wall_length-1)?b_z/2:0)
                 ];
     
-                var brick_model = new Cube(true);
-                registerShape(brick_id,brick_model);
+                registerShape(brick_id,null);
                 var brick_oimo = world.add({
                     type: 'box',
                     size: [b_x,b_y,b_z],
                     pos: brick_pos,
                     move: true, 
-                    density: 0.5,
-                    friction: 0.1,
-                    restitution: 0,
-                    sleeping:true,
+                    density: 0.1,
+                    friction: 0.2,
+                    restitution: 0.05,
                     belongsTo:2
                 });
                 attachOimoObjectToShape(brick_id,brick_oimo,brick_pos);
@@ -129,9 +126,10 @@ function setup_wall(origin){
     shape_groups["bricks"]["end"] = shapes.length;
 }
 function reset_wall(){
-    if(shape_groups["bricks"]["start"] !== -1 && shape_groups["bricks"]["end"] !== -1 ){
-        for(var i=shape_groups["bricks"]["start"];i<shape_groups["bricks"]["end"];i++){//Reset all old bricks
-            if(shapes[i].name.indexOf('brick') !== -1){
+    var sgb = shape_groups["bricks"];
+    if(sgb["start"] !== -1 && ["end"] !== -1 ){
+        for(var i=sgb["start"];i<sgb["end"];i++){//Reset all old bricks
+            if(shapes[i].id.indexOf('brick') !== -1){
                 var o = shapes[i]["oimo"];
                 var o_pos = shapes[i]["spawn_pos"];
                 o.resetRotation(0,0,0);

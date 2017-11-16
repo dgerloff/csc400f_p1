@@ -4,8 +4,7 @@ var gl = canvas.getContext('webgl2');
 var colorfulShader = new Shader("colorful_vertex_shader", "colorful_fragment_shader");
 var solidShader = new Shader("solid_vertex_shader", "solid_fragment_shader");
 
-var ground_model = new Cube([0.3,0.3,0.3]);
-registerShape('ground',ground_model);
+registerShape('ground',[0.3,0.3,0.3]);
 
 //Projection matrix
 var prj = mat4.create();
@@ -49,6 +48,7 @@ function Draw(now) {
     requestAnimationFrame(Draw);
 }
 
+var drawinCube = new Cube();
 function drawAllShapes(mdv, shader_program, shader_1, shader_2, arg1, arg2, arg3, arg4) {
     for (i in shapes) {
         gl.useProgram(shader_program);
@@ -66,9 +66,9 @@ function drawAllShapes(mdv, shader_program, shader_1, shader_2, arg1, arg2, arg3
             mat4.scale(m, m, [shape.oimo.shapes.width, shape.oimo.shapes.height, shape.oimo.shapes.depth]);
             gl.uniformMatrix4fv(shader_program.modelview_matrix_handle, false, m);
         }
-
+        drawinCube.SetColor(shape.color);
         //Draw all shapes
-        shape.shape.Draw(shader_1, shader_2, arg1, arg2, arg3, arg4);
+        drawinCube.Draw(shader_1, shader_2, arg1, arg2, arg3, arg4);
     }
 }
 
