@@ -5,9 +5,13 @@ var colorfulShader = new Shader("colorful_vertex_shader", "colorful_fragment_sha
 var solidShader = new Shader("solid_vertex_shader", "solid_fragment_shader");
 
 registerShape('ground',[0.3,0.3,0.3]);
+registerShape('launcher_source',[1,1,1]);
 
 //Projection matrix
 var prj = mat4.create();
+
+// Hook the twirly handler up to the canvas.
+InitializeMouseOverElement('glcanvas');
 
 function Draw(now) {
     gl.enable(gl.DEPTH_TEST);
@@ -18,10 +22,11 @@ function Draw(now) {
 
     now = now / 1000.0;
 
-    mat4.perspective(prj, Radians(90.0), canvas.width / canvas.height, 0.5, 1000.0);
+    mat4.perspective(prj, Radians(90.0), canvas.width / canvas.height, 0.5, 100.0);
 
     var mdv = mat4.create();
-    mat4.lookAt(mdv, [-15, 5.0, 0.0], [0.0, 5.0, 0.0], [0.0, 5.0, 0.0]);
+    mat4.lookAt(mdv, [camera["current"]["x"],camera["current"]["y"],camera["current"]["z"]], [0.0, camera["current"]["y"]-(camera["start"]["y"]+(camera["current"]["y"]*0.1)), 0.0], [0.0, 5.0, 0.0]);
+    mat4.multiply(mdv, mdv, camera["rotation"]); 
 
     //Draw colors
     gl.useProgram(colorfulShader.program);

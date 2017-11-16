@@ -8,17 +8,34 @@ var world = new OIMO.World({
     gravity: [0, -9.8, 0]//Setup the forces of gravity on XYZ; -9.8 on Y simulates Earth's Gravity (when `worldscale` is 1.0)
 });
 
-var o_ground = world.add({
-    type: 'box', // type of shape : sphere, box, cylinder 
-    size: [20, 2, 40], // size of shape
-    pos: [0, 0, 0], // start position in degree
-    move: false, // dynamic or static
-    density: 1,
-    friction: 1,
-    restitution: 0.9,
-    belongsTo:2
-});
-attachOimoObjectToShape('ground',o_ground);
+(function (){
+    var o_ground = world.add({
+        type: 'box', // type of shape : sphere, box, cylinder 
+        size: [40, 2, 40], // size of shape
+        pos: [0, 0, 0], // start position in degree
+        move: false, // dynamic or static
+        density: 1,
+        friction: 1,
+        restitution: 0.9,
+        belongsTo:2
+    });
+    attachOimoObjectToShape('ground',o_ground);
+})();
+
+(function (){
+    var pos = [-10,15,0];
+    var src = world.add({
+        type: 'box', // type of shape : sphere, box, cylinder 
+        size: [0.5,0.5,0.5], // size of shape
+        pos: pos, // start position in degree
+        move: false, // dynamic or static
+        density: 1,
+        friction: 1,
+        restitution: 0.9,
+        belongsTo:1
+    });
+    attachOimoObjectToShape('launcher_source',src,pos);
+})();
 
 //Call for the first frame & repeat
 function OimoMain(now) {
@@ -50,7 +67,7 @@ function setup_projectiles(projectile_count,projectile_size){
         var proj_oimo = world.add({
             type: 'box',
             size: [projectile_size,projectile_size,projectile_size],
-            pos: [-50, 10, 0],
+            pos: [0, -100, 0],
             rot:[45,0,0],
             move: true, 
             density: 20,
@@ -59,7 +76,7 @@ function setup_projectiles(projectile_count,projectile_size){
             belongsTo:1,
             collidesWith:2
         });
-        attachOimoObjectToShape(proj_id,proj_oimo);
+        attachOimoObjectToShape(proj_id,proj_oimo,[0, -100, 0]);
     }
     shape_groups["projectiles"]["end"] = shapes.length;
 }
@@ -74,6 +91,19 @@ function launchProjectile(){
     shape_groups["projectiles"]["next_index"] += 1;
     if(shape_groups["projectiles"]["next_index"] >= shape_groups["projectiles"]["end"]){
         shape_groups["projectiles"]["next_index"] = shape_groups["projectiles"]["start"];
+    }
+}
+function reset_projectiles(){
+    var sgb = shape_groups["projectiles"];
+    if(sgb["start"] !== -1 && sgb["end"] !== -1 ){
+        for(var i=sgb["start"];i<sgb["end"];i++){//Reset all old bricks
+            if(shapes[i].id.indexOf('proj') !== -1){
+                var o = shapes[i]["oimo"];
+                var o_pos = shapes[i]["spawn_pos"];
+                o.resetRotation(0,0,0);
+                o.resetPosition(o_pos[0],o_pos[1],o_pos[2]);
+            }
+        }
     }
 }
 
