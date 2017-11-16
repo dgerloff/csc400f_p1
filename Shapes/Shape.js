@@ -158,7 +158,7 @@ class Shape
 		{
 			//this.BindEnableAttribute(va, this.triangle_vrts_buffer, 3, gl.FLOAT);
 			line_shader.UseProgram();
-			line_shader.SetStandardAttributes(this.triangle_vrts_buffer, null, null, null);
+			line_shader.SetStandardAttributes(this.line_segment_vrts_buffer, null, null, null);
 			if (this.indexed)
 			{	
 				gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.line_segment_indicies_buffer);
