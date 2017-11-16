@@ -58,20 +58,22 @@ function drawAllShapes(mdv, shader_program, shader_1, shader_2, arg1, arg2, arg3
         let shape = shapes[i];
         //Re-locate all shapes according to their oimo object, if it exists
         if (shape.oimo != undefined) {
-            let m = mat4.create();
-            // center - used for translation
-            let c = [shape.oimo.pos.x, shape.oimo.pos.y, shape.oimo.pos.z];
-            // orientation - used for rotation
-            let o = [shape.oimo.orientation.x, shape.oimo.orientation.y, shape.oimo.orientation.z, shape.oimo.orientation.w];
+            if(shape.oimo.pos.y >= -5){
+                // center - used for translation
+                let c = [shape.oimo.pos.x, shape.oimo.pos.y, shape.oimo.pos.z];
+                let m = mat4.create();
+                // orientation - used for rotation
+                let o = [shape.oimo.orientation.x, shape.oimo.orientation.y, shape.oimo.orientation.z, shape.oimo.orientation.w];
 
-            mat4.fromRotationTranslation(m, o, c);
-            mat4.multiply(m, mdv, m);
-            mat4.scale(m, m, [shape.oimo.shapes.width, shape.oimo.shapes.height, shape.oimo.shapes.depth]);
-            gl.uniformMatrix4fv(shader_program.modelview_matrix_handle, false, m);
+                mat4.fromRotationTranslation(m, o, c);
+                mat4.multiply(m, mdv, m);
+                mat4.scale(m, m, [shape.oimo.shapes.width, shape.oimo.shapes.height, shape.oimo.shapes.depth]);
+                gl.uniformMatrix4fv(shader_program.modelview_matrix_handle, false, m);
+
+                drawinCube.SetColor(shape.color);
+                drawinCube.Draw(shader_1, shader_2, arg1, arg2, arg3, arg4);
+            }
         }
-        drawinCube.SetColor(shape.color);
-        //Draw all shapes
-        drawinCube.Draw(shader_1, shader_2, arg1, arg2, arg3, arg4);
     }
 }
 
