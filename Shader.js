@@ -47,20 +47,11 @@ class Shader{
 		//Will link the shaders together,
 		//and will then attach all handles to the shader programs
 		gl.useProgram(this.program);
-		
-		this.program.modelview_matrix_handle = gl.getUniformLocation(this.program, "modelview_matrix");
+        this.program.modelview_matrix_handle = gl.getUniformLocation(this.program, "modelview_matrix");
         this.program.projection_matrix_handle = gl.getUniformLocation(this.program, "projection_matrix");
         this.program.color_attribute_handle = gl.getAttribLocation(this.program, "vertex_color");
         this.program.vertex_attribute_handle = gl.getAttribLocation(this.program, "vertex_coordinates");
-		this.program.solid_color_uniform_handle = gl.getUniformLocation(this.program, "u_color");
-		this.program.normals_handle = gl.getAttribLocation(this.program, "a_normals");
-		this.program.normal_matrix_handle = gl.getUniformLocation(this.program, "normal_matrix");
-		this.program.a_tcoords_handle = gl.getAttribLocation(this.program, "a_tcoords");
-        this.program.u_light_position_handle = gl.getUniformLocation(this.program, "u_light_position");
-        this.program.u_ambient_handle = gl.getUniformLocation(this.program, "u_material.k_ambient");
-        this.program.u_diffuse_handle = gl.getUniformLocation(this.program, "u_material.k_diffuse");
-        this.program.u_specular_handle = gl.getUniformLocation(this.program, "u_material.k_specular");
-        this.program.u_shininess_handle = gl.getUniformLocation(this.program, "u_material.k_shininess");
+        this.program.solid_color_uniform_handle = gl.getUniformLocation(this.program, "u_color");
 		//Log so we can make sure this works
 		console.log(this.program);
         gl.useProgram(null);
@@ -68,27 +59,24 @@ class Shader{
 	}
 
 	SetStandardAttributes(vertices_buffer, normals_buffer, colors_buffer, tcoords_buffer) {
-		if (vertices_buffer != null && this.program.vertex_attribute_handle >= 0)
+        if (vertices_buffer != null && this.program.vertex_attribute_handle >= 0)
 		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, vertices_buffer);
             gl.vertexAttribPointer(this.program.vertex_attribute_handle, 3, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(this.program.vertex_attribute_handle);
 		}
-
-		if (normals_buffer != null && this.program.normals_handle >= 0)
+		if (normals_buffer != null && this.a_normals >= 0)
 		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, normals_buffer);
-			gl.vertexAttribPointer(this.program.normals_handle, 3, gl.FLOAT, false, 0, 0);
-			gl.enableVertexAttribArray(this.program.normals_handle);
+			gl.vertexAttribPointer(this.a_normals, 3, gl.FLOAT, false, 0, 0);
+			gl.enableVertexAttribArray(this.a_normals);
 		}
-
 		if (colors_buffer != null && this.program.color_attribute_handle >= 0)
 		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, colors_buffer);
             gl.vertexAttribPointer(this.program.color_attribute_handle, 3, gl.FLOAT, false, 0, 0);
 			gl.enableVertexAttribArray(this.program.color_attribute_handle);
 		}
-
 		if (tcoords_buffer != null && this.a_tcoords >= 0)
 		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, tcoords_buffer);
@@ -100,8 +88,8 @@ class Shader{
     DisableStandardAttributes()	{
 		if (this.program.vertex_attribute_handle >= 0)
 			gl.disableVertexAttribArray(this.vertex_attribute_handle);
-		if (this.program.normals_handle >= 0)
-			gl.disableVertexAttribArray(this.program.normals_handle);
+		if (this.a_normals >= 0)
+			gl.disableVertexAttribArray(this.a_normals);
 		if (this.program.color_attribute_handle >= 0)
 			gl.disableVertexAttribArray(this.color_attribute_handle);
 		if (this.a_tcoords >= 0)
