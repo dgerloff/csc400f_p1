@@ -20,6 +20,7 @@ var world = new OIMO.World({
         belongsTo:2
     });
     attachOimoObjectToShape('ground',o_ground);
+    attachMaterialToShape('ground');
 })();
 
 (function (){
@@ -35,6 +36,7 @@ var world = new OIMO.World({
         belongsTo:1
     });
     attachOimoObjectToShape('launcher_source',src,pos);
+    attachMaterialToShape('launcher_source');
 })();
 
 //Call for the first frame & repeat
@@ -77,6 +79,7 @@ function setup_projectiles(projectile_count,projectile_size){
             collidesWith:2
         });
         attachOimoObjectToShape(proj_id,proj_oimo,[0, -100, 0]);
+        attachMaterialToShape(proj_id);
     }
     shape_groups["projectiles"]["end"] = shapes.length;
 }
@@ -150,6 +153,7 @@ function setup_wall(origin){
                     belongsTo:2
                 });
                 attachOimoObjectToShape(brick_id,brick_oimo,brick_pos);
+                attachMaterialToShape(brick_id);
             }
         }
     }
