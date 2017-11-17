@@ -25,15 +25,3 @@ function registerShape(shape_id,block_color){
         shapes.push({id:shape_id,color:block_color});
     }
 }
-
-function attachMaterialToShape(shape_id){
-    for(i in shapes){
-        if(shapes[i].id == shape_id){
-            shapes[i]["material"] = [
-                [Math.random(),Math.random(),Math.random()],
-                [Math.random(),Math.random(),Math.random()],
-                [Math.random(),Math.random(),Math.random()]
-            ];
-        }
-    }
-}

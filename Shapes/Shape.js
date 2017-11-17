@@ -131,7 +131,7 @@ class Shape
 		{
 			face_shader.UseProgram();
 			//face_shader.SetStandardUniforms(mv, prj, nm, light_position, material, parameter);
-			face_shader.SetStandardAttributes(this.triangle_vrts_buffer, this.normal_vrts_buffer, this.colors_buffer, null);
+			face_shader.SetStandardAttributes(this.triangle_vrts_buffer, null, this.colors_buffer, null);
 			// If draw_wireframe is false, draw the actual faces.
 			if (this.indexed)
 			{
