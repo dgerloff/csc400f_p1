@@ -9,19 +9,36 @@ function attachOimoObjectToShape(shape_id,oimo_object,original_location){
     }
 }
 
-function registerShape(shape_id,block_color){
+function registerShape(shape_id,color = null){
     var found = false;
-    if(null===block_color || "object"!=typeof block_color || 3!==block_color.length){
-        block_color = [Math.random(),Math.random(),Math.random()];
+    if(null===color || "object"!=typeof color || 3!==color.length){
+        color = [Math.random(),Math.random(),Math.random()];
     }
     for(i in shapes){
         if(shapes[i].id == shape_id){
-            shapes[i]["color"] = block_color;
+            shapes[i]["material"] = [color,color,color];
             found = true;
             break;
         }
     }
     if(!found){
-        shapes.push({id:shape_id,color:block_color});
+        shapes.push({id:shape_id,material:[color,color,color]});
+    }
+}
+
+function setMaterialColorForShape(shape_id,color = null){
+    if(color === null){
+        color = [Math.random(),Math.random(),Math.random()];
+    }
+    if(color.length === 3){
+        for(i in shapes){
+            if(shapes[i].id == shape_id){
+                shapes[i]["material"] = [
+                    color,color,color
+                ];
+            }
+        }
+    } else {
+        console.error('OIMO_GRAPHICS_HELPER:: `color.length` !== 3',color);
     }
 }
