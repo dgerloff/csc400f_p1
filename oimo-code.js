@@ -256,14 +256,13 @@ function reset_wall(){
 var wrecking_block=false;
 function launch_object()
 {
-    if(wrecking_block == false)
+    if(wrecking_block == true)
     {
         var m=mat4.create();
         var finalpos = [];
         mat4.rotate(m,m,Radians(launcher_azimuth),[0,-1,0])
         mat4.rotate(m,m,Radians(launcher_elevation),[0,0,1])
         vec3.transformMat4(finalpos,[-12.5,0,0],m)
-        debugger;
         vec3.add(finalpos,finalpos,anchororgin)
         var counter =1;
        for(var i=chain_oimo.length-1; i>0;i--)
