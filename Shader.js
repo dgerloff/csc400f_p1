@@ -66,7 +66,7 @@ class Shader{
 
 	}
 
-	SetStandardAttributes(vertices_buffer, normals_buffer, colors_buffer, tcoords_buffer) {
+	SetStandardAttributes(vertices_buffer, normals_buffer,tcoords_buffer){ //colors_buffer, tcoords_buffer) {
 		if (vertices_buffer != null && this.program.vertex_attribute_handle >= 0)
 		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, vertices_buffer);
@@ -81,13 +81,6 @@ class Shader{
 			gl.enableVertexAttribArray(this.program.normals_handle);
 		}
 
-		if (colors_buffer != null && this.program.color_attribute_handle >= 0)
-		{
-			gl.bindBuffer(gl.ARRAY_BUFFER, colors_buffer);
-            gl.vertexAttribPointer(this.program.color_attribute_handle, 3, gl.FLOAT, false, 0, 0);
-			gl.enableVertexAttribArray(this.program.color_attribute_handle);
-		}
-
 		if (tcoords_buffer != null && this.a_tcoords >= 0)
 		{
 			gl.bindBuffer(gl.ARRAY_BUFFER, tcoords_buffer);
@@ -95,7 +88,14 @@ class Shader{
 			gl.enableVertexAttribArray(this.a_tcoords);
 		}
     }
-    
+    SetColorAttribute(colors_buffer){
+    	if (colors_buffer != null && this.program.color_attribute_handle >= 0)
+		{
+			gl.bindBuffer(gl.ARRAY_BUFFER, colors_buffer);
+            gl.vertexAttribPointer(this.program.color_attribute_handle, 3, gl.FLOAT, false, 0, 0);
+			gl.enableVertexAttribArray(this.program.color_attribute_handle);
+		}
+    }
     DisableStandardAttributes()	{
 		if (this.program.vertex_attribute_handle >= 0){
 			gl.disableVertexAttribArray(this.vertex_attribute_handle);

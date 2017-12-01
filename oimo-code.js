@@ -1,3 +1,4 @@
+
 var world = new OIMO.World({
     timestep: 1 / 60,//simulation time per step. Smaller #'s are "finer", e.g 1/1000
     iterations: 8,//Solvers for joints
@@ -23,7 +24,7 @@ var world = new OIMO.World({
 })();
 
 (function (){
-    var pos = [-10,15,0];
+    var pos = [-10,10,0];
     var src = world.add({
         type: 'box', // type of shape : sphere, box, cylinder 
         size: [0.5,0.5,0.5], // size of shape
@@ -83,7 +84,7 @@ function setup_projectiles(projectile_count,projectile_size){
 
 function launchProjectile(){
     var proj = shapes[shape_groups["projectiles"]["next_index"]].oimo;
-    proj.resetPosition(-10,15,0);
+    proj.resetPosition(-10,10,0);
     proj.resetRotation(45,0,0);
     proj.linearVelocity.x = launcher_power;
     proj.linearVelocity.y = launcher_elevation;
@@ -109,7 +110,7 @@ function reset_projectiles(){
 
 //Setup wall for first time
 setup_wall([10,1,0]);
-function setup_wall(origin){
+function setup_wall(origin,mod){
     shape_groups["bricks"]["start"] = shapes.length;
     var brick_size = 3;
     var brick_radius = brick_size/2;
@@ -122,7 +123,7 @@ function setup_wall(origin){
             if(!offset && c == 0){
                 // skip the first block in every non-offset row
             } else {
-                var brick_id = 'brick_'+r+'_'+c;
+                var brick_id = 'brick_'+r+'_'+c+'_'+mod;
                 
                 var b_x = brick_radius,
                 b_y = brick_radius,
@@ -155,6 +156,90 @@ function setup_wall(origin){
     }
     shape_groups["bricks"]["end"] = shapes.length;
 }
+var chain_oimo= [];
+//creates the Wrecking block
+var anchororgin = [5,23,0];
+setup_block(anchororgin,25,chain_oimo);
+function setup_block(origin,chain_count,chain_oimo)
+{   
+    var chain_id = 0;
+    registerShape(chain_id,[1,0,0]);
+        chain_oimo.push(world.add({
+            type: 'box',
+            size: [.5,.5,.5],
+            pos: origin,
+            rot:[0,0,0],
+            move: false, 
+            density: 20,
+            friction: 0.2,
+            restitution: 0.01,
+            belongsTo:1,
+            collidesWith:2
+        }));
+    attachOimoObjectToShape(chain_id,chain_oimo[0],origin);
+    for(var i=1;i<chain_count;i++){
+        chain_id = 'chain_'+i;
+
+        registerShape(chain_id,[1,0,0]);
+            chain_oimo.push(world.add({
+            type: 'box',
+            size: [.5,.5,.5],
+            pos: [5-(.5*i),23,0],//[Math.cos(Radians(launcher_azimuth))*(origin[0]-(.5*i)),origin[1],Math.sin(Radians(launcher_azimuth))*(origin[0]-(.5*i))],
+            rot:[0,0,0],
+            move: true, 
+            density: 850,
+            friction: 0.2,
+            restitution: 0.01,
+            belongsTo:1,
+            collidesWith:2
+        }));
+        attachOimoObjectToShape(chain_id,chain_oimo[i],origin);
+    }
+
+    for(var i =0;i<chain_count-1;i++)
+    {
+        world.add({type:'jointBall',
+            body1:chain_oimo[i],
+            body2:chain_oimo[i+1],
+            pos1: [0, -.3, 0],
+            pos2: [0, .3, 0],
+            collision:false
+        });
+    }
+    //now to add the block
+    
+    chain_id = 'chain_'+(chain_count);
+
+        registerShape(chain_id,[1,0,0]);
+            chain_oimo.push(world.add({
+            type: 'box',
+            size: [3,3,3],
+            pos: [5-(.5*chain_count),23,0],//[Math.cos(Radians(launcher_azimuth))*(-(.5*(chain_count))), origin[1], Math.sin(Radians(launcher_azimuth))*(-5-(.5*(chain_count+1)))],
+            rot:[0,0,0],
+            move: true, 
+            density: 40,
+            friction: 0.2,
+            restitution: 0.01,
+            belongsTo:1,
+            collidesWith:2
+        }));
+    attachOimoObjectToShape(chain_id,chain_oimo[chain_count],origin);
+     world.add({type:'jointBall',
+            body1:chain_oimo[chain_count-1],
+            body2:chain_oimo[chain_count],
+            pos1: [0, -.3, 0],
+            pos2: [0, 1.3, 0],
+            collision:true
+        });
+     for(var i =0; i<chain_count;i++)
+     {
+        chain_oimo[i].isStatic = true;
+        chain_oimo[i].isDynamic = false;
+     }
+     chain_oimo[chain_count].isStatic = true;
+     chain_oimo[chain_count].isDynamic = false;
+
+}
 function reset_wall(){
     var sgb = shape_groups["bricks"];
     if(sgb["start"] !== -1 && sgb["end"] !== -1 ){
@@ -167,4 +252,50 @@ function reset_wall(){
             }
         }
     }
+}
+var wrecking_block=false;
+function launch_object()
+{
+    if(wrecking_block == false)
+    {
+        var m=mat4.create();
+        var finalpos = [];
+        mat4.rotate(m,m,Radians(launcher_azimuth),[0,-1,0])
+        mat4.rotate(m,m,Radians(launcher_elevation),[0,0,1])
+        vec3.transformMat4(finalpos,[-12.5,0,0],m)
+        debugger;
+        vec3.add(finalpos,finalpos,anchororgin)
+        var counter =1;
+       for(var i=chain_oimo.length-1; i>0;i--)
+       {
+            var temp = [finalpos[0]+(.5*counter),finalpos[1]-(.25*i)*(finalpos[1]-anchororgin[1]),finalpos[2]-(.25*i)*(finalpos[2]-anchororgin[2])];
+            chain_oimo[i].resetPosition(temp[0],temp[1],temp[2]);//(launcher_power*.1)*(5-(.5*i)),23+(.02*launcher_elevation*i),launcher_azimuth*.05*i)
+            chain_oimo[i].isStatic = false;
+            chain_oimo[i].isDynamic = true;
+            counter=counter+1;
+       }
+    }
+    else
+    {
+
+        launchProjectile();
+    }
+}
+function change_destruction(ischecked)
+{
+    wrecking_block = ischecked;
+}
+function reset_wrecking_block()
+{
+           for(var i=1; i<chain_oimo.length;i++)
+       {
+            chain_oimo[i].resetRotation(0,0,0);
+            chain_oimo[i].resetPosition(5-(.5*i),23,0);
+        }
+        world.step();
+        for(var i=1; i<chain_oimo.length;i++)
+        {
+            chain_oimo[i].isStatic = true;
+            chain_oimo[i].isDynamic = false;
+        }
 }
